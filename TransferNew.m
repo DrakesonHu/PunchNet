@@ -3,10 +3,10 @@
 % % CLPS 0950: Intro to Programming
 % % GitHub token: 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
 
-% folderName = "C:\Users\drake\MATLAB\Projects\PunchNetDataset\PunchData\PunchData";
-% imds = imageDatastore(folderName, ...
-%     IncludeSubfolders=true, ...
-%     LabelSource="foldernames");
+folderName = "PunchData";
+imds = imageDatastore(folderName, ...
+    IncludeSubfolders=true, ...
+    LabelSource="foldernames");
 
 % Splits data into training, validation, and testing pools
 imageAugmenter = imageDataAugmenter( ...
@@ -60,32 +60,32 @@ net = trainnet(augimdsTrain, trainednet3,"crossentropy",options);
 
 %%
 
-load trainednet1.mat
-load trainednet2.mat
+load trainednet3.mat
+load trainednet3_1.mat
 
 classNames = categories(imds.Labels);
 
-YTest1 = minibatchpredict(trainednet1,augimdsTest);
+YTest1 = minibatchpredict(trainednet3,augimdsTest);
 YTest1 = scores2label(YTest1,classNames);
-YTest2 = minibatchpredict(net,augimdsTest);
+YTest2 = minibatchpredict(trainednet3_1,augimdsTest);
 YTest2 = scores2label(YTest2,classNames);
 
 TTest = imdsTest.Labels;
 figure
 subplot(1, 2, 1);
-title('trainednet1');
+title('trainednet3');
 confusionchart(TTest,YTest1);
 subplot(1, 2, 2);
-title('net');
+title('trainednet3_1');
 confusionchart(TTest,YTest2);
 %%
-im = imread("C:\Users\drake\MATLAB\Projects\PunchNetData\PunchData\PunchData\Hit\H (57).jpg");
+im = imread("C:\Users\drake\MATLAB\Projects\PunchNet\PunchData\PunchData\Hit\H (57).jpg");
 
 im = imresize(im,[224 224]);
 X = single(im);
 
 scores1 = predict(trainednet3,X);
-scores2 = predict(net,X);
+scores2 = predict(trainednet3_1,X);
 [label1,score1] = scores2label(scores1,classNames);
 [label2,score2] = scores2label(scores2,classNames);
 
