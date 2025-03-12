@@ -1,0 +1,2 @@
+An example picture from the hit detection for seg dataset depicting a Hit
+An example picture from the hit detection for seg dataset depicting a Near miss
