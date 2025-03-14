@@ -3,7 +3,7 @@
 % % CLPS 0950: Intro to Programming
 % % GitHub token: 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
 
-folderName = "PunchData";
+folderName = "PunchData2";
 imds = imageDatastore(folderName, ...
     IncludeSubfolders=true, ...
     LabelSource="foldernames");
@@ -27,6 +27,7 @@ I = imtile(augimdsTrain.Files,Frames=idx);
 figure
 imshow(I)
 %%
+
 % trainset = zeros(224, 224, 3, numel(augimdsTrain.Files), 'uint8');
 % for i = 1:numel(augimdsTrain.Files)
 %     img = readimage(augimdsTrain, i);
@@ -45,6 +46,7 @@ imshow(I)
 %     validset(:, :, :, i) = imresize(img, [224 224]);
 % end
 %%
+
 augimdsTrain.MiniBatchSize = 32;
 load net_1.mat
 options = trainingOptions("sgdm", ...
@@ -55,8 +57,8 @@ options = trainingOptions("sgdm", ...
     Verbose=false, ...
     ExecutionEnvironment = 'gpu', ...
     MiniBatchSize=32, ...
-    MaxEpochs=10);
-net = trainnet(augimdsTrain, trainednet3,"crossentropy",options);
+    MaxEpochs=30);
+net = trainnet(augimdsTrain, trainednet4,"crossentropy",options);
 
 %%
 
@@ -65,27 +67,28 @@ load trainednet3_1.mat
 
 classNames = categories(imds.Labels);
 
-YTest1 = minibatchpredict(trainednet3,augimdsTest);
+YTest1 = minibatchpredict(net,augimdsTrain);
 YTest1 = scores2label(YTest1,classNames);
-YTest2 = minibatchpredict(trainednet3_1,augimdsTest);
+YTest2 = minibatchpredict(trainednet4,augimdsTrain);
 YTest2 = scores2label(YTest2,classNames);
 
-TTest = imdsTest.Labels;
+TTest = imdsTrain.Labels;
 figure
 subplot(1, 2, 1);
-title('trainednet3');
+title('trainednet4');
 confusionchart(TTest,YTest1);
 subplot(1, 2, 2);
 title('trainednet3_1');
 confusionchart(TTest,YTest2);
 %%
-im = imread("C:\Users\drake\MATLAB\Projects\PunchNet\PunchData\PunchData\Hit\H (57).jpg");
+
+im = imread("C:\Users\drake\MATLAB\Projects\PunchNet\PunchData\PunchData\Miss\Screenshot 2025-03-11 222732.png");
 
 im = imresize(im,[224 224]);
 X = single(im);
 
 scores1 = predict(trainednet3,X);
-scores2 = predict(trainednet3_1,X);
+trainednet4scores2 = predict(trainednet3_1,X);
 [label1,score1] = scores2label(scores1,classNames);
 [label2,score2] = scores2label(scores2,classNames);
 
