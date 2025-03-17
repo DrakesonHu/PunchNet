@@ -15,7 +15,7 @@ imageAugmenter = imageDataAugmenter( ...
     'RandYTranslation',[-10 10], ...
     'RandXReflection',true);
 
-[imdsTrain,imdsValid,imdsTest] = splitEachLabel(imds,0.85,0.10,0.05,"randomized");
+[imdsTrain,imdsValid,imdsTest] = splitEachLabel(imds,0.90,0.07,0.03,"randomized");
 augimdsTrain = augmentedImageDatastore([224 224], imdsTrain, "ColorPreprocessing","gray2rgb", 'DataAugmentation', imageAugmenter);
 augimdsValid = augmentedImageDatastore([224 224], imdsValid, "ColorPreprocessing","gray2rgb");
 augimdsTest = augmentedImageDatastore([224 224], imdsTest, "ColorPreprocessing","gray2rgb");
@@ -48,28 +48,29 @@ imshow(I)
 %%
 
 augimdsTrain.MiniBatchSize = 32;
-load net_2.mat
+% load net_1.mat
 options = trainingOptions("sgdm", ...
+    LearnRateSchedule="cosine", ...
     ValidationData=augimdsValid, ...
     ValidationFrequency=5, ...
-    LearnRateSchedule="cosine", ...
     Plots="training-progress", ...
-    Metrics="accuracy", ...
+    Metrics=["accuracy","precision"], ...
+    ObjectiveMetricName="precision", ...
+    OutputNetwork="best-validation", ...
     Verbose=false, ...
     ExecutionEnvironment = 'gpu', ...
-    MiniBatchSize=32, ...
+    MiniBatchSize=64, ...
     MaxEpochs=10);
-next2 = trainnet(augimdsTrain, next2,"crossentropy",options);
+next7_2 = trainnet(augimdsTrain, net_2,"crossentropy",options);
 
 %%
 
-load trainednet3.mat
-load trainednet3_1.mat
+% load next2.mat
 %%
 
 classNames = categories(imds.Labels);
 
-YTest1 = minibatchpredict(next_net,augimdsTest);
+YTest1 = minibatchpredict(next7_2,augimdsTest);
 YTest1 = scores2label(YTest1,classNames);
 YTest2 = minibatchpredict(next2,augimdsTest);
 YTest2 = scores2label(YTest2,classNames);
@@ -78,7 +79,7 @@ TTest = imdsTest.Labels;
 figure
 subplot(1, 2, 1);
 confusionchart(TTest,YTest1);
-title("next_net");
+title("next7_1");
 subplot(1, 2, 2);
 confusionchart(TTest,YTest2);
 title('next2');
