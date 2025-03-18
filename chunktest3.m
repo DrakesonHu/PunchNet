@@ -2,8 +2,11 @@
 %synthetic sequence of punch predictions vv
 YPred = ["None", "None", "Hit", "Hit", "Hit", "None", "Hit", "Hit", "None", "Miss", "Miss", "Miss", "None","Block", "Block","None"];
 
-%convert to binary labels
-isPunch = (YPred ~= "None");
+%convert to binary labels FOR EACH CATEGORY
+isHit = (YPred == "Hit")
+isMiss = (YPred == "Miss")
+isBlock = (YPred == "Block")
+isPunch = isHit|isMiss|isBlock;
 
 %display
 disp("Frame-by-frame Predictions:");
