@@ -1,6 +1,6 @@
 %testing chunking logic
 %synthetic sequence of punch predictions vv
-YPred = ["None", "None", "Hit", "Hit", "Hit", "None", "Hit", "Hit", "None","Block", "Block","None"];
+YPred = predictions';
 
 %convert to binary labels
 isPunch = (YPred ~= "None");
