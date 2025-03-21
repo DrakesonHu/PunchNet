@@ -12,12 +12,6 @@ isPunch = (YPred ~= "None");
 
 frames = 1:numel(YPred);
 
-%display
-disp("Frame-by-frame Predictions:");
-disp(YPred);
-disp("Binary Labels:");
-disp(isPunch);
-
 %identify punchstart and end frame
 diffSeq = diff([0 isPunch 0]);
 punchStart = find(diffSeq == 1);
