@@ -5,6 +5,8 @@ YPred = ["None", "None", "Hit", "Hit", "Hit", "None", "Hit", "Hit", "None", "Mis
 %convert to binary labels
 isPunch = (YPred ~= "None");
 
+frames = 1:numel(YPred);
+
 %display
 disp("Frame-by-frame Predictions:");
 disp(YPred);
@@ -28,8 +30,23 @@ disp(punchEnd);
 
 %plot timeline of punches
 figure;
-stem(1:numel(isPunch), isPunch, "filled");
-xlabel('Frame Number');
-ylabel('Punch Detected (1=yes, 0=no)');
-title('Punch Detection');
+hold on;
+
+%different style
+stem(frames, isPunch, 'r', 'LineWidth', 2, 'Marker', 'o', 'MarkerFaceColor','r', 'MarkerSize', 8);
+
+%customization
+xlabel('Frame Number', 'FontSize', 14, 'FontWeight', 'bold');
+ylabel('Punch Detected (1=yes, 0=no)', 'FontSize', 14, 'FontWeight', 'bold');
+title('Punch Detection Over Time', 'FontSize', 16, 'FontWeight','bold');
 grid on;
+ylim([-0.2,1.2]); %keeps plot clean
+
+%annotate punches
+for i = 1:numel(YPred)
+    if isPunch(i)
+        text(frames(i), 1.05, YPred(i), 'FontSize', 12, 'FontWeight', 'bold', 'HorizontalAlignment', 'center', 'Rotation', 45);
+    end
+end
+
+hold off;
