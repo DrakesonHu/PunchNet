@@ -5,7 +5,7 @@
 %% Prepares Training Data
 
 % Assigns data to a datastore object
-folderName = "PDAugmented";
+folderName = "PDAugmented2";
 imds = imageDatastore(folderName, ...
     IncludeSubfolders=true, ...
     LabelSource="foldernames");
@@ -49,7 +49,7 @@ options = trainingOptions("sgdm", ...
     ExecutionEnvironment = 'gpu', ...
     MiniBatchSize=80, ...
     MaxEpochs=30);
-trainednet = trainnet(augimdsTrain, net_2,"crossentropy",options);
+trainednet = trainnet(augimdsTrain, net_1,"crossentropy",options);
 
 %% Visualizes accuracy (For Testing)
 

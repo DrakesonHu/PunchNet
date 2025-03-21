@@ -1,9 +1,11 @@
-% function predictions = Video_Process(folderName)
+% function predictions = Video_Process(foldername)
+%% This script is used to process input videos using a trained neural network
+% written in March 2025
+% Drakeson Hu
 
 %% Loads Frames into Datastore
 
-folderName = "frame_Video_data_test_clip_MT";
-input = imageDatastore(folderName);
+input = imageDatastore(foldername);
 
 %% Creates Class Names to Assign Predictions to
 
@@ -12,7 +14,11 @@ ClassNames = categorical(ClassNames);
 
 %% Makes Predictions
 
-YTest1 = minibatchpredict(trainednet,input);
+disp("Loading Neural Network...")
+load next5.mat
+disp("Success")
+disp("Making Predictions...")
+YTest1 = minibatchpredict(next5,input);
 predictions = scores2label(YTest1, ClassNames);
 
 %% Assigns Each Predicted Class to an Array
@@ -24,7 +30,7 @@ missframes = predictions == "Miss";
 % There is no need to create a category for the "None" class, as there is
 % nothing happening during those frames
 
-%% Displays Predicted Frames (For Testing)
+%% Displays Predicted Frames
 
 n = 1;
 
@@ -49,7 +55,6 @@ if numel(framenum(blockframes)) ~= 0
     B = imtile(input.Files(framenum(blockframes)));  
     imshow(B);
     title("block")
-    n = n + 1;
 end
 
 % end
