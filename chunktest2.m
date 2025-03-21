@@ -33,7 +33,7 @@ figure;
 hold on;
 
 %different style
-stem(frames, isPunch, 'r', 'LineWidth', 2, 'Marker', 'o', 'MarkerFaceColor','r', 'MarkerSize', 8);
+stem(frames, isPunch, 'b', 'LineWidth', 2, 'Marker', 'o', 'MarkerFaceColor','r', 'MarkerSize', 8);
 
 %customization
 xlabel('Frame Number', 'FontSize', 14, 'FontWeight', 'bold');
