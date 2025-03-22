@@ -15,9 +15,9 @@ ClassNames = categorical(ClassNames);
 %% Makes Predictions
 
 disp("Loading Neural Network...")
-load next5.mat
+load trainednet2.mat
 disp("Making Predictions...")
-YTest1 = minibatchpredict(next5,input);
+YTest1 = minibatchpredict(trainednet,input);
 predictions = scores2label(YTest1, ClassNames);
 disp("Success!")
 

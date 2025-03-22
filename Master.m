@@ -6,7 +6,6 @@
 file_location = [filepath, file];
 
 %%
-
 disp("Preparing Data...")
 foldername = Video_reader(file_location, file);
 
